@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api
+package tekin.lutfi.nasa.rest.api.ui.activity
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import tekin.lutfi.nasa.rest.api.R
 
 class Home : AppCompatActivity() {
 
