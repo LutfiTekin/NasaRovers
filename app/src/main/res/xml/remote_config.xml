@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>service_api_key</key>
+        <value>DEMO_KEY</value>
+    </entry>
+
+    <entry>
+        <key>service_base_url_host</key>
+        <value>api.nasa.gov</value>
+    </entry>
+
+
+</defaultsMap>
