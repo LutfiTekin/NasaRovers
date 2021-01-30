@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Nasa Rovers</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_curiosity">Curiosity</string>
+    <string name="title_opportunity">Opportunity</string>
+    <string name="title_spirit">Spirit</string>
 </resources>
