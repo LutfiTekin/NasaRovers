@@ -10,5 +10,9 @@
         <value>api.nasa.gov</value>
     </entry>
 
+    <entry>
+        <key>service_base_url_api</key>
+        <value>/mars-photos/api/v1</value>
+    </entry>
 
 </defaultsMap>
