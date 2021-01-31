@@ -10,7 +10,8 @@ import tekin.lutfi.nasa.rest.api.R
 class Curiosity : BaseRover() {
 
     override val roverName = CURIOSITY
-
+    override val availableCameras =
+        arrayOf("FHAZ", "RHAZ", "MAST", "CHEMCAM", "MAHLI", "MARDI", "NAVCAM")
 
 
 }

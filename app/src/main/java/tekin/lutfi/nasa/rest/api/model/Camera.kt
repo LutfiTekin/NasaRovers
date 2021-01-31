@@ -24,9 +24,6 @@ data class Camera(
             "PANCAM",
             "MINITES"
         )
-        val curiosity = listOf("FHAZ", "RHAZ", "MAST", "CHEMCAM", "MAHLI", "MARDI", "NAVCAM")
-        val opportunity = listOf("FHAZ", "RHAZ", "NAVCAM", "PANCAM", "MINITES")
-        val spirit = listOf("FHAZ", "RHAZ", "NAVCAM", "PANCAM", "MINITES")
     }
 
 }

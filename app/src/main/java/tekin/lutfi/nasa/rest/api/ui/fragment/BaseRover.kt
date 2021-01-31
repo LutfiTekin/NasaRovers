@@ -33,6 +33,7 @@ open class BaseRover: Fragment() {
     private val viewModel: RoverViewModel by activityViewModels()
     private lateinit var attachedContext: Context
     open val roverName: String = ""
+    open val availableCameras = arrayOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
