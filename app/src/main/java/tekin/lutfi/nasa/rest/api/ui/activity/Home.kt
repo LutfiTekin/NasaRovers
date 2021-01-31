@@ -41,13 +41,18 @@ class Home : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_view_mode) {
-            val current = roverViewModel.recyclerViewMode.value ?: MODE_LIST
-            roverViewModel.recyclerViewMode.value =
-                if (current == MODE_GRID) MODE_LIST else MODE_GRID
-            val icon =
-                if (current == MODE_GRID) R.drawable.ic_baseline_grid_on_24 else R.drawable.ic_baseline_view_list_24
-            item.setIcon(icon)
+        when (item.itemId) {
+            R.id.action_view_mode -> {
+                val current = roverViewModel.recyclerViewMode.value ?: MODE_LIST
+                roverViewModel.recyclerViewMode.value =
+                    if (current == MODE_GRID) MODE_LIST else MODE_GRID
+                val icon =
+                    if (current == MODE_GRID) R.drawable.ic_baseline_grid_on_24 else R.drawable.ic_baseline_view_list_24
+                item.setIcon(icon)
+            }
+            R.id.action_filter -> {
+                roverViewModel.launchFilterDialog.value = true
+            }
         }
         return super.onOptionsItemSelected(item)
     }

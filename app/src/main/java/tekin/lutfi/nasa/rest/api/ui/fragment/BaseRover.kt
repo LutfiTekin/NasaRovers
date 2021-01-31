@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
@@ -34,13 +35,15 @@ const val CURIOSITY = "curiosity"
 const val OPPORTUNITY = "opportunity"
 const val SPIRIT = "spirit"
 
+const val AVAILABLE_CAMERAS = "ac"
+const val SELECTED_ROVER = "sr"
+
 open class BaseRover : Fragment() {
 
     private val viewModel: RoverViewModel by activityViewModels()
     private lateinit var attachedContext: Context
     open val roverName: String = ""
     open val availableCameras = arrayOf<String>()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,9 +70,19 @@ open class BaseRover : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupUI()
-        val source = PhotosApi(roverName, retrofit, null)
+        loadRoverPhotos()
+        viewModel.selectedCamera.observe(viewLifecycleOwner, { map ->
+            val selectedCamera = map[roverName]
+            if (selectedCamera.isNullOrBlank())
+                loadRoverPhotos()
+            else
+                loadRoverPhotos(selectedCamera)
+        })
+    }
+
+    private fun loadRoverPhotos(camera: String? = null) {
+        val source = PhotosApi(roverName, retrofit, camera)
         val paged = Pager(PagingConfig(PAGE_SIZE)) {
             ListPagingSource(source)
         }.flow.cachedIn(lifecycleScope)
@@ -78,7 +91,6 @@ open class BaseRover : Fragment() {
                 photosAdapter.submitData(it)
             }
         }
-
     }
 
     private fun setupUI() {
@@ -98,6 +110,18 @@ open class BaseRover : Fragment() {
             }
             photosAdapter.currentViewMode = if (selectedMode == MODE_GRID) TYPE_GRID else TYPE_LIST
             photosAdapter.notifyItemRangeChanged(0,10)
+        })
+
+        viewModel.launchFilterDialog.observe(viewLifecycleOwner, { shouldLaunch ->
+            if (shouldLaunch == null)
+                return@observe
+            findNavController().navigate(R.id.selectCamera, Bundle().apply {
+                putStringArray(AVAILABLE_CAMERAS,availableCameras)
+                putString(SELECTED_ROVER,roverName)
+            })
+            //Action is consumed, data should be cleared
+            viewModel.launchFilterDialog.value = null
+
         })
     }
 

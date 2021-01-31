@@ -7,5 +7,10 @@
         android:icon="@drawable/ic_baseline_grid_on_24"
         android:title="@string/list_view_mode"
         app:showAsAction="ifRoom"/>
-
+    <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        android:title="@string/filter"
+        app:showAsAction="always" />
 </menu>

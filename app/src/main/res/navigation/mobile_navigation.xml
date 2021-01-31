@@ -16,4 +16,8 @@
         android:id="@+id/navigation_spirit"
         android:name="tekin.lutfi.nasa.rest.api.ui.fragment.Spirit"
         android:label="Spirit" />
+    <dialog
+        android:id="@+id/selectCamera"
+        android:name="tekin.lutfi.nasa.rest.api.ui.fragment.SelectCamera"
+        android:label="SelectCamera" />
 </navigation>

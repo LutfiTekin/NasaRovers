@@ -6,4 +6,15 @@
     <string name="title_spirit">Spirit</string>
     <string name="filter">Filter</string>
     <string name="list_view_mode">View Mode</string>
+    <string name="select_all">All</string>
+    <string name="cam_info">No Camera Selected</string>
+    <string name="cam_FHAZ">Front Hazard Avoidance Camera</string>
+    <string name="cam_RHAZ">Rear Hazard Avoidance Camera</string>
+    <string name="cam_MAST">Mast Camera</string>
+    <string name="cam_CHEMCAM">Chemistry and Camera Complex</string>
+    <string name="cam_MAHLI">Mars Hand Lens Imager</string>
+    <string name="cam_MARDI">Mars Descent Imager</string>
+    <string name="cam_NAVCAM">Navigation Camera</string>
+    <string name="cam_PANCAM">Panoramic Camera</string>
+    <string name="cam_MINITES">Miniature Thermal Emission Spectrometer (Mini-TES)</string>
 </resources>

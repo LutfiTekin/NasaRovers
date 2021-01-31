@@ -9,13 +9,21 @@ import tekin.lutfi.nasa.rest.api.defaultRetrofit
 import tekin.lutfi.nasa.rest.api.model.Photo
 import tekin.lutfi.nasa.rest.api.service.MarsRoverPhotosService
 import tekin.lutfi.nasa.rest.api.toConsole
+import tekin.lutfi.nasa.rest.api.ui.fragment.CURIOSITY
+import tekin.lutfi.nasa.rest.api.ui.fragment.OPPORTUNITY
+import tekin.lutfi.nasa.rest.api.ui.fragment.SPIRIT
 
 const val MODE_LIST = "list"
 const val MODE_GRID = "grid"
 
 class RoverViewModel : ViewModel() {
 
-    val filterByCamera = MutableLiveData<Map<String,String>>()
+    val launchFilterDialog = MutableLiveData<Boolean?>(null)
+
+    /**
+     * By default all available cameras are selected
+     */
+    val selectedCamera = MutableLiveData<Map<String,String>>()
 
     val recyclerViewMode = MutableLiveData<String>(MODE_LIST)
 
