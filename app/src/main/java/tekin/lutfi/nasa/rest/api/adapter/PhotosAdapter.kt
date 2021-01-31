@@ -3,11 +3,19 @@ package tekin.lutfi.nasa.rest.api.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import tekin.lutfi.nasa.rest.api.R
 import tekin.lutfi.nasa.rest.api.model.Photo
 import tekin.lutfi.nasa.rest.api.paging.RoverPhotoComparator
 
+const val TYPE_LIST = 1
+const val TYPE_GRID = 2
+
 class PhotosAdapter : PagingDataAdapter<Photo, RoverPhotoViewHolder>(RoverPhotoComparator) {
+
+    var currentViewMode = TYPE_LIST
 
     override fun onBindViewHolder(holder: RoverPhotoViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -17,7 +25,12 @@ class PhotosAdapter : PagingDataAdapter<Photo, RoverPhotoViewHolder>(RoverPhotoC
         return RoverPhotoViewHolder(
             LayoutInflater.from(parent.context),
             parent,
-            R.layout.list_item_photo
+            if (viewType == TYPE_LIST) R.layout.list_item_photo else R.layout.grid_item_photo
         )
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return currentViewMode
+    }
+
 }

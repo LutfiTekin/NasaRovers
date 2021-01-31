@@ -4,4 +4,6 @@
     <string name="title_curiosity">Curiosity</string>
     <string name="title_opportunity">Opportunity</string>
     <string name="title_spirit">Spirit</string>
+    <string name="filter">Filter</string>
+    <string name="list_view_mode">View Mode</string>
 </resources>
