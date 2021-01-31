@@ -47,6 +47,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0-alpha10"
 
     implementation "com.squareup.retrofit2:retrofit:2.7.2"
     implementation "com.squareup.retrofit2:converter-gson:2.7.2"
