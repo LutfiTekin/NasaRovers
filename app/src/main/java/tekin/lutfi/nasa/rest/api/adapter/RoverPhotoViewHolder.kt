@@ -17,25 +17,27 @@ import tekin.lutfi.nasa.rest.api.model.Photo
 class RoverPhotoViewHolder internal constructor(
     inflater: LayoutInflater,
     parent: ViewGroup,
+    listener: DetailListener,
     @LayoutRes res: Int
 ) : RecyclerView.ViewHolder(inflater.inflate(res, parent, false)){
 
     private val imageView = itemView.findViewById<AppCompatImageView>(R.id.imageView)
-    private val camName = itemView.findViewById<AppCompatTextView>(R.id.camName)
+    private val camName = itemView.findViewById<AppCompatTextView?>(R.id.camName)
     private var loadedPhoto: Photo? = null
 
-    private val retryClickListener = View.OnClickListener {
-        bind(loadedPhoto)
-    }
+
 
     init {
-        camName.setOnClickListener(retryClickListener)
+        camName?.setOnClickListener { bind(loadedPhoto) }
+        imageView.setOnClickListener { listener.onSelected(loadedPhoto) }
     }
 
     fun bind(photo: Photo?){
-        camName.isClickable = false
-        camName.text = photo?.camera?.fullName.orEmpty()
-        camName.isVisible = false
+        camName?.apply {
+            isClickable = false
+            text = photo?.camera?.fullName.orEmpty()
+            isVisible = false
+        }
         loadedPhoto = photo
         imageView.load(photo?.imgSrc){
             crossfade(true)
@@ -44,13 +46,15 @@ class RoverPhotoViewHolder internal constructor(
                 override fun onError(request: ImageRequest, throwable: Throwable) {
                     super.onError(request, throwable)
                     imageView.setImageResource(R.drawable.ic_baseline_error_outline_24)
-                    camName.text = itemView.context.getString(R.string.image_load_error)
-                    camName.isVisible = true
-                    camName.isClickable = true
+                    camName?.apply {
+                        text = itemView.context.getString(R.string.image_load_error)
+                        isVisible = true
+                        isClickable = true
+                    }
                 }
                 override fun onSuccess(request: ImageRequest, metadata: ImageResult.Metadata) {
                     super.onSuccess(request, metadata)
-                    camName.isVisible = true
+                    camName?.isVisible = true
                 }
             })
         }

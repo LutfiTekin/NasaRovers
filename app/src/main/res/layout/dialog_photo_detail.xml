@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:contentDescription="@string/cd_rover_photo"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/cameraNameLabel"
+        style="@style/labelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoDateLabel" />
+
+    <TextView
+        android:id="@+id/cameraName"
+        style="@style/labelStyle.value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/roverName"
+        app:layout_constraintTop_toTopOf="@+id/cameraNameLabel"
+        tools:text="@string/cam_FHAZ" />
+
+    <TextView
+        android:id="@+id/roverLabel"
+        style="@style/labelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_rover"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraNameLabel" />
+
+    <TextView
+        android:id="@+id/roverName"
+        style="@style/labelStyle.value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/launchDate"
+        app:layout_constraintTop_toTopOf="@+id/roverLabel"
+        tools:text="Curiosity (Active)" />
+
+    <TextView
+        android:id="@+id/photoDateLabel"
+        style="@style/labelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_photo_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/photoDate"
+        style="@style/labelStyle.value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cameraName"
+        app:layout_constraintTop_toTopOf="@+id/photoDateLabel"
+        tools:text="2021-01-31" />
+
+    <TextView
+        android:id="@+id/launchDateLabel"
+        style="@style/labelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_launch_date"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roverLabel" />
+
+    <TextView
+        android:id="@+id/landingDateLabel"
+        style="@style/labelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/label_landing_date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/landingDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/launchDateLabel" />
+
+    <TextView
+        android:id="@+id/launchDate"
+        style="@style/labelStyle.value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/landingDate"
+        app:layout_constraintTop_toTopOf="@+id/launchDateLabel"
+        tools:text="2012-08-06" />
+
+    <TextView
+        android:id="@+id/landingDate"
+        style="@style/labelStyle.value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/landingDateLabel"
+        app:layout_constraintTop_toTopOf="@+id/landingDateLabel"
+        tools:text="2011-11-26" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

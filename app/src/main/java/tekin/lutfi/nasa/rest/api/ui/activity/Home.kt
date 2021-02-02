@@ -13,9 +13,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import tekin.lutfi.nasa.rest.api.R
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.MODE_GRID
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.MODE_LIST
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.RoverViewModel
+import tekin.lutfi.nasa.rest.api.viewmodel.MODE_GRID
+import tekin.lutfi.nasa.rest.api.viewmodel.MODE_LIST
+import tekin.lutfi.nasa.rest.api.viewmodel.RoverViewModel
 
 class Home : AppCompatActivity() {
 

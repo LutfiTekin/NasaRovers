@@ -15,20 +15,20 @@ import androidx.paging.cachedIn
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import tekin.lutfi.nasa.rest.api.R
-import tekin.lutfi.nasa.rest.api.adapter.PhotosAdapter
-import tekin.lutfi.nasa.rest.api.adapter.PhotoLoadingStateAdapter
-import tekin.lutfi.nasa.rest.api.adapter.TYPE_GRID
-import tekin.lutfi.nasa.rest.api.adapter.TYPE_LIST
+import tekin.lutfi.nasa.rest.api.adapter.*
 import tekin.lutfi.nasa.rest.api.defaultRetrofit
+import tekin.lutfi.nasa.rest.api.model.Photo
 import tekin.lutfi.nasa.rest.api.paging.ListPagingSource
 import tekin.lutfi.nasa.rest.api.paging.PAGE_SIZE
 import tekin.lutfi.nasa.rest.api.service.PhotosApi
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.MODE_GRID
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.MODE_LIST
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.RoverViewModel
+import tekin.lutfi.nasa.rest.api.ui.dialog.ROVER_PHOTO
+import tekin.lutfi.nasa.rest.api.viewmodel.MODE_GRID
+import tekin.lutfi.nasa.rest.api.viewmodel.MODE_LIST
+import tekin.lutfi.nasa.rest.api.viewmodel.RoverViewModel
 
 
 const val CURIOSITY = "curiosity"
@@ -38,7 +38,7 @@ const val SPIRIT = "spirit"
 const val AVAILABLE_CAMERAS = "ac"
 const val SELECTED_ROVER = "sr"
 
-abstract class BaseRover : Fragment() {
+abstract class BaseRover : Fragment(), DetailListener {
 
     private val viewModel: RoverViewModel by activityViewModels()
     private lateinit var attachedContext: Context
@@ -53,7 +53,7 @@ abstract class BaseRover : Fragment() {
         return inflater.inflate(R.layout.fragment_rover, container, false)
     }
 
-    private val photosAdapter = PhotosAdapter()
+    private val photosAdapter = PhotosAdapter(this)
 
     private val photosRV by lazy {
         view?.findViewById<RecyclerView>(R.id.photosRV)
@@ -126,6 +126,11 @@ abstract class BaseRover : Fragment() {
         })
     }
 
+    override fun onSelected(photo: Photo?) {
+        findNavController().navigate(R.id.photoDetail, Bundle().apply {
+            putString(ROVER_PHOTO,Gson().toJson(photo))
+        })
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

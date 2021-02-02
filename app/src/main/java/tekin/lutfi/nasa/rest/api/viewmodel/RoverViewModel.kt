@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api.ui.viewmodel
+package tekin.lutfi.nasa.rest.api.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData

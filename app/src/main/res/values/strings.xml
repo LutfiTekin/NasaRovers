@@ -18,4 +18,10 @@
     <string name="cam_PANCAM">Panoramic Camera</string>
     <string name="cam_MINITES">Miniature Thermal Emission Spectrometer (Mini-TES)</string>
     <string name="image_load_error">Cannot load image, touch to retry</string>
+    <string name="label_camera">Camera</string>
+    <string name="label_rover">Rover</string>
+    <string name="label_photo_date">Photo Date</string>
+    <string name="label_launch_date">Launch Date</string>
+    <string name="label_landing_date">Landing Date</string>
+    <string name="cd_rover_photo">Image taken by rover</string>
 </resources>

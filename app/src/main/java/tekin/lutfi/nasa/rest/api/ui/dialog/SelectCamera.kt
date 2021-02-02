@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api.ui.fragment
+package tekin.lutfi.nasa.rest.api.ui.dialog
 
 import android.content.Context
 import android.os.Bundle
@@ -12,8 +12,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import tekin.lutfi.nasa.rest.api.R
-import tekin.lutfi.nasa.rest.api.toConsole
-import tekin.lutfi.nasa.rest.api.ui.viewmodel.RoverViewModel
+import tekin.lutfi.nasa.rest.api.ui.fragment.AVAILABLE_CAMERAS
+import tekin.lutfi.nasa.rest.api.ui.fragment.SELECTED_ROVER
+import tekin.lutfi.nasa.rest.api.viewmodel.RoverViewModel
 
 class SelectCamera: BottomSheetDialogFragment() {
 
