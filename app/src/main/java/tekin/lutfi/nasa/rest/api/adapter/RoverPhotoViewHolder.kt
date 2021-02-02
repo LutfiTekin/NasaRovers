@@ -20,8 +20,10 @@ class RoverPhotoViewHolder internal constructor(
     private val imageView = itemView.findViewById<AppCompatImageView>(R.id.imageView)
 
     fun bind(photo: Photo?){
-        "loaded photo ${photo?.imgSrc}".toConsole()
-        imageView.load(photo?.imgSrc)
+        imageView.load(photo?.imgSrc){
+            crossfade(true)
+            placeholder(R.drawable.ic_baseline_satellite_24)
+        }
     }
 
 }

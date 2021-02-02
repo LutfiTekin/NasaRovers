@@ -1,7 +1,9 @@
 package tekin.lutfi.nasa.rest.api
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.GsonBuilder
@@ -11,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val NASA_DATE_FORMAT = "YYYY-MM-DD"
+const val NASA_DATE_FORMAT = "yyyy-M-d"
 
 const val DEFAULT_TIMEOUT: Long = 15000
 
@@ -43,6 +45,19 @@ private val Context.defaultOkHttpClient: OkHttpClient
             .build()
     }
 
+@Suppress("DEPRECATION")
+val Context.isInternetAvailable: Boolean
+    get() {
+        return try {
+            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val netInfo = cm.activeNetworkInfo
+            netInfo != null && netInfo.isConnectedOrConnecting
+        } catch (e: Exception) {
+            false
+        }
+
+    }
+
 
 private val serviceHost: String
     get() {
@@ -67,7 +82,6 @@ private val apiKeyInterceptor = object : Interceptor {
         var request: Request = chain.request()
         val url: HttpUrl = request.url.newBuilder().addQueryParameter("api_key", apiKey).build()
         request = request.newBuilder().url(url).build()
-        Log.d("toConsole","url ${url.queryParameterNames} ${request.url}")
         return chain.proceed(request)
     }
 }
@@ -104,9 +118,13 @@ val Context.defaultRetrofit: Retrofit
 
 
 /**
- * Print given object to the logcat
+ * Print given object to logcat and Crashlytics
  */
 fun Any?.toConsole(){
+    val crashlytics = FirebaseCrashlytics.getInstance()
+    if (this is Exception)
+        crashlytics.recordException(this)
+    else crashlytics.log(this.toString())
     if (BuildConfig.DEBUG.not()) return
     Log.d("NRDLOG", this.toString())
 }

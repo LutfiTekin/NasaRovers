@@ -38,12 +38,13 @@ const val SPIRIT = "spirit"
 const val AVAILABLE_CAMERAS = "ac"
 const val SELECTED_ROVER = "sr"
 
-open class BaseRover : Fragment() {
+abstract class BaseRover : Fragment() {
 
     private val viewModel: RoverViewModel by activityViewModels()
     private lateinit var attachedContext: Context
-    open val roverName: String = ""
-    open val availableCameras = arrayOf<String>()
+    abstract val roverName: String
+    abstract val availableCameras: Array<String>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,7 +65,7 @@ open class BaseRover : Fragment() {
 
     private val concatAdapter by lazy {
         photosAdapter.withLoadStateFooter(
-            footer = PhotoLoadingStateAdapter { photosAdapter.retry() }//TODO FIX
+            footer = PhotoLoadingStateAdapter { photosAdapter.retry() }
         )
     }
 

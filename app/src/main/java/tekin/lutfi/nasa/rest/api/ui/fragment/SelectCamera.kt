@@ -28,7 +28,7 @@ class SelectCamera: BottomSheetDialogFragment() {
     }
 
     private val camChipGroup: ChipGroup? by lazy {
-        view?.findViewById<ChipGroup>(R.id.camChips)
+        view?.findViewById(R.id.camChips)
     }
 
     private val camInfo: TextView? by lazy {
@@ -65,7 +65,7 @@ class SelectCamera: BottomSheetDialogFragment() {
     private fun setupChipGroup() {
         camChipGroup?.removeAllViews()
         availableCameras.forEach { camera ->
-
+            //Create chip view for each camare
             val chip = Chip(attachedContext).apply {
                 text = camera
                 isCheckable = true
@@ -75,7 +75,7 @@ class SelectCamera: BottomSheetDialogFragment() {
                     if (buttonView.isPressed.not())
                         return@setOnCheckedChangeListener
                     /**
-                     * Clearing all selected chips because
+                     * Manually clearing all selected chips because
                      * app:singleSelection is not working as it should
                      */
                     camChipGroup?.clearCheck()

@@ -20,8 +20,7 @@ interface MarsRoverPhotosService {
     suspend fun roverPhotosByDay(
         @Path("rover") rover: String,
         @Query("earth_date") day: String,
-        @Query("camera") camera: String?,
-        @Query("page") page: Int
+        @Query("camera") camera: String?
     ): Response<JsonObject>
 
 
