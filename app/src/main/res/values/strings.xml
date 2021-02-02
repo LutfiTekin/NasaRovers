@@ -17,4 +17,5 @@
     <string name="cam_NAVCAM">Navigation Camera</string>
     <string name="cam_PANCAM">Panoramic Camera</string>
     <string name="cam_MINITES">Miniature Thermal Emission Spectrometer (Mini-TES)</string>
+    <string name="image_load_error">Cannot load image, touch to retry</string>
 </resources>

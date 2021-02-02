@@ -14,4 +14,15 @@
         app:srcCompat="@mipmap/ic_launcher"
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/camName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="8dp"
+        android:background="#39070707"
+        android:padding="8dp"
+        tools:text="MAST"
+        android:textColor="#F0FFFFFF" />
 </FrameLayout>
