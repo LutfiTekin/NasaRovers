@@ -1,7 +1,6 @@
 package tekin.lutfi.nasa.rest.api.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -25,14 +24,13 @@ class RoverPhotoViewHolder internal constructor(
     private val camName = itemView.findViewById<AppCompatTextView?>(R.id.camName)
     private var loadedPhoto: Photo? = null
 
-
-
     init {
         camName?.setOnClickListener { bind(loadedPhoto) }
         imageView.setOnClickListener { listener.onSelected(loadedPhoto) }
     }
 
     fun bind(photo: Photo?){
+        imageView.isClickable = false
         camName?.apply {
             isClickable = false
             text = photo?.camera?.fullName.orEmpty()
@@ -42,21 +40,31 @@ class RoverPhotoViewHolder internal constructor(
         imageView.load(photo?.imgSrc){
             crossfade(true)
             placeholder(R.drawable.ic_baseline_satellite_24)
-            this.listener(object : ImageRequest.Listener{
-                override fun onError(request: ImageRequest, throwable: Throwable) {
-                    super.onError(request, throwable)
-                    imageView.setImageResource(R.drawable.ic_baseline_error_outline_24)
-                    camName?.apply {
-                        text = itemView.context.getString(R.string.image_load_error)
-                        isVisible = true
-                        isClickable = true
-                    }
-                }
-                override fun onSuccess(request: ImageRequest, metadata: ImageResult.Metadata) {
-                    super.onSuccess(request, metadata)
-                    camName?.isVisible = true
-                }
-            })
+            this.listener(coilRequestListener)
+        }
+    }
+
+    private val coilRequestListener = object : ImageRequest.Listener {
+        override fun onError(request: ImageRequest, throwable: Throwable) {
+            super.onError(request, throwable)
+            imageView.apply {
+                setImageResource(R.drawable.ic_baseline_error_outline_24)
+                isClickable = false
+            }
+            camName?.apply {
+                text = itemView.context.getString(R.string.image_load_error)
+                isVisible = true
+                isClickable = true
+            }
+        }
+
+        override fun onSuccess(request: ImageRequest, metadata: ImageResult.Metadata) {
+            super.onSuccess(request, metadata)
+            camName?.apply {
+                isVisible = true
+                isClickable = false
+            }
+            imageView.isClickable = true
         }
     }
 
