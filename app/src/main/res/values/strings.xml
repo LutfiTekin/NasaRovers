@@ -24,4 +24,6 @@
     <string name="label_launch_date">Launch Date</string>
     <string name="label_landing_date">Landing Date</string>
     <string name="cd_rover_photo">Image taken by rover</string>
+    <string name="notification_channel_general_description">Default notification channel</string>
+    <string name="notification_channel_general">General</string>
 </resources>
