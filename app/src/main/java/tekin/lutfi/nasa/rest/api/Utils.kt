@@ -118,13 +118,16 @@ val Context.defaultRetrofit: Retrofit
 
 
 /**
- * Print given object to logcat and Crashlytics
+ * Send given object to logcat and selectively Crashlytics
  */
-fun Any?.toConsole(){
+fun Any?.toConsole(omitFromCrashlytics: Boolean = false){
+    if (BuildConfig.DEBUG){
+        Log.d("NRDLOG", this.toString())
+    }
+    if (omitFromCrashlytics) return
     val crashlytics = FirebaseCrashlytics.getInstance()
     if (this is Exception)
         crashlytics.recordException(this)
-    else crashlytics.log(this.toString())
-    if (BuildConfig.DEBUG.not()) return
-    Log.d("NRDLOG", this.toString())
+    else  crashlytics.log(this.toString())
+
 }
