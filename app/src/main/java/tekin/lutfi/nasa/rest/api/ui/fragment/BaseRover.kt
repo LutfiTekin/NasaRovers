@@ -33,6 +33,7 @@ import tekin.lutfi.nasa.rest.api.ui.dialog.ROVER_PHOTO
 import tekin.lutfi.nasa.rest.api.viewmodel.MODE_GRID
 import tekin.lutfi.nasa.rest.api.viewmodel.MODE_LIST
 import tekin.lutfi.nasa.rest.api.viewmodel.RoverViewModel
+import java.lang.Exception
 
 
 const val CURIOSITY = "curiosity"

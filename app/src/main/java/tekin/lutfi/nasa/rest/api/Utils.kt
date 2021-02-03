@@ -11,7 +11,9 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
+
 
 const val NASA_DATE_FORMAT = "yyyy-M-d"
 
@@ -31,15 +33,17 @@ fun loggingInterceptor(logLevel: HttpLoggingInterceptor.Level): HttpLoggingInter
  */
 private val Context.defaultOkHttpClient: OkHttpClient
     get() {
-        val cacheSize: Long = 10 * 1024 * 1024 // 10 MB
-        val cache = Cache(cacheDir, cacheSize)
+        val httpCacheDirectory = File(cacheDir, "rf_cache")
+        val cacheSize: Long = 20 * 1024 * 1024 // 20 MB
+        val cache = Cache(httpCacheDirectory, cacheSize)
         val builder = OkHttpClient.Builder()
             .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
             .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
             .readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
             .addInterceptor(apiKeyInterceptor)
             .addInterceptor(loggingInterceptor(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(onlineInterceptor)
+            .addNetworkInterceptor(onlineInterceptor)
+            .addNetworkInterceptor(offlineInterceptor)
             .cache(cache)
         return builder
             .build()
@@ -96,6 +100,20 @@ private val onlineInterceptor =  object : Interceptor {
             .build()
     }
 }
+
+private val Context.offlineInterceptor: Interceptor
+    get() = object : Interceptor{
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request()
+            val maxStale = 60 * 60 * 12 //When offline read from cache up to 12 hours
+            if (isInternetAvailable.not())
+                request.newBuilder().header(
+                    "Cache-Control",
+                    "public, only-if-cached, max-stale=$maxStale"
+                ).build()
+            return chain.proceed(request)
+        }
+    }
 
 private val serviceBaseUrl: String
     get() {
