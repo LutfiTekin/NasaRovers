@@ -31,9 +31,9 @@ class LoadStateViewHolder internal constructor(
 
     fun bind(loadState: LoadState){
 
-        /*retryButton.isVisible = loadState !is LoadState.Loading
+        retryButton.isVisible = loadState !is LoadState.Loading
         errorMessage.isVisible = loadState !is LoadState.Loading
-        progress.isVisible = loadState is LoadState.Loading*/
+        progress.isVisible = loadState is LoadState.Loading
 
        if (loadState is LoadState.Error){
            errorMessage.text = loadState.error.localizedMessage

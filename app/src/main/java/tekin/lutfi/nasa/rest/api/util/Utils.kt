@@ -174,7 +174,6 @@ fun Any?.toConsole(omitFromCrashlytics: Boolean = false) {
     if (this is Exception)
         crashlytics.recordException(this)
     else crashlytics.log(this.toString())
-
 }
 
 val String.detailDateFormat: String
