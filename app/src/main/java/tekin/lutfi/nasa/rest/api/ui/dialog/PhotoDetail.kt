@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import tekin.lutfi.nasa.rest.api.R
 import tekin.lutfi.nasa.rest.api.model.Photo
+import tekin.lutfi.nasa.rest.api.util.detailDateFormat
 
 const val ROVER_PHOTO = "rp"
 
@@ -38,10 +39,10 @@ class PhotoDetail: BottomSheetDialogFragment() {
         val rover = photo?.rover ?: return
         with(view){
             findViewById<AppCompatTextView>(R.id.cameraName).text = camera.fullName
-            findViewById<AppCompatTextView>(R.id.photoDate).text = photo?.earthDate
+            findViewById<AppCompatTextView>(R.id.photoDate).text = photo?.photoDate
             findViewById<AppCompatTextView>(R.id.roverName).text = with(rover){"$name ($status)"}
-            findViewById<AppCompatTextView>(R.id.launchDate).text = rover.launchDate
-            findViewById<AppCompatTextView>(R.id.landingDate).text = rover.landingDate
+            findViewById<AppCompatTextView>(R.id.launchDate).text = rover.launchDate?.detailDateFormat
+            findViewById<AppCompatTextView>(R.id.landingDate).text = rover.landingDate?.detailDateFormat
             findViewById<AppCompatImageView>(R.id.imageView).load(photo?.imgSrc)
         }
     }

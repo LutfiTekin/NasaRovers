@@ -23,6 +23,10 @@ interface MarsRoverPhotosService {
         @Query("camera") camera: String?
     ): Response<JsonObject>
 
+    @GET("manifests/{rover}")
+    suspend fun getRoverManifest(
+        @Path("rover") rover: String
+    ): Response<JsonObject>
 
 
 

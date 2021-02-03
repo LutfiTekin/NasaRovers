@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import tekin.lutfi.nasa.rest.api.R
 import tekin.lutfi.nasa.rest.api.adapter.*
-import tekin.lutfi.nasa.rest.api.defaultRetrofit
 import tekin.lutfi.nasa.rest.api.model.Photo
 import tekin.lutfi.nasa.rest.api.paging.ListPagingSource
 import tekin.lutfi.nasa.rest.api.paging.PAGE_SIZE
@@ -33,7 +32,6 @@ import tekin.lutfi.nasa.rest.api.ui.dialog.ROVER_PHOTO
 import tekin.lutfi.nasa.rest.api.viewmodel.MODE_GRID
 import tekin.lutfi.nasa.rest.api.viewmodel.MODE_LIST
 import tekin.lutfi.nasa.rest.api.viewmodel.RoverViewModel
-import java.lang.Exception
 
 
 const val CURIOSITY = "curiosity"
@@ -68,9 +66,6 @@ abstract class BaseRover : Fragment(), DetailListener {
         view?.findViewById<RecyclerView>(R.id.photosRV)
     }
 
-    private val retrofit by lazy {
-        attachedContext.defaultRetrofit
-    }
 
     private val concatAdapter by lazy {
         photosAdapter.withLoadStateFooter(
@@ -92,7 +87,7 @@ abstract class BaseRover : Fragment(), DetailListener {
     }
 
     private fun loadRoverPhotos(camera: String? = null) {
-        val source = PhotosApi(roverName, retrofit, camera)
+        val source = PhotosApi(roverName, attachedContext, camera)
         val paged = Pager(PagingConfig(PAGE_SIZE)) {
             ListPagingSource(source)
         }.flow.cachedIn(lifecycleScope)

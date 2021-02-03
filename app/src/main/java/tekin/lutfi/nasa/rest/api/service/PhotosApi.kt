@@ -1,21 +1,24 @@
 package tekin.lutfi.nasa.rest.api.service
 
-import com.google.firebase.analytics.FirebaseAnalytics
+import android.content.Context
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Response
-import retrofit2.Retrofit
-import tekin.lutfi.nasa.rest.api.NASA_DATE_FORMAT
 import tekin.lutfi.nasa.rest.api.model.Photo
-import tekin.lutfi.nasa.rest.api.toConsole
+import tekin.lutfi.nasa.rest.api.paging.PAGE_SIZE
+import tekin.lutfi.nasa.rest.api.util.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotosApi(private val rover: String, retrofit: Retrofit, private val camera: String?) {
+const val DEFAULT_SOL = 1
+
+class PhotosApi(private val rover: String, private val context: Context, private val camera: String?) {
 
     var page = 1
         set(value) {
@@ -24,7 +27,35 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
         }
     var selectedSol = 0
 
-    private val service = retrofit.create(MarsRoverPhotosService::class.java)
+    private val maxSolKey = MAX_SOL + rover
+
+    private val localData by lazy { LocalData(context) }
+
+    private val service = context.defaultRetrofit.create(MarsRoverPhotosService::class.java)
+
+    suspend fun findMostRecentList(): List<Photo>{
+        return withContext(Dispatchers.IO){
+            var maxRetry = 100
+            if (localData.exists(maxSolKey)){
+                maxRetry = localData.read(maxSolKey, maxRetry)
+            }
+
+            val combinedList = mutableListOf<Photo>()
+            while (maxRetry > 0){
+                maxRetry--
+                "Retries left $maxRetry".toConsole(true)
+                try {
+                    val list = loadPhotos(1,true)
+                    if (list.isNotEmpty()) {
+                        combinedList.addAll(list)
+                        if (combinedList.size >= PAGE_SIZE)
+                            return@withContext combinedList
+                    }
+                } catch (e: Exception) {}
+            }
+            return@withContext emptyList()
+        }
+    }
 
     suspend fun loadPhotos(requestedPage: Int = 1, solConsumed: Boolean = false): List<Photo> {
         try {
@@ -53,9 +84,12 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
      * behind from current date
      */
     private suspend fun findMostRecentSol(): Int {
+        if (localData.exists(maxSolKey)) {
+            return localData.read(maxSolKey, DEFAULT_SOL)
+        }
         val retryLimit = 5
         var currentDay = 0
-        while (currentDay < retryLimit) {
+        while (currentDay < retryLimit + 1) {
             //Get a date to try in millisecond unit
             val dayInMillis = Calendar.getInstance().apply {
                 add(Calendar.DAY_OF_YEAR, -currentDay)
@@ -68,11 +102,38 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
                 val list = response.parseList()
                 if (list.isNullOrEmpty())
                     throw Exception("Trying to find recent list $currentDay")
-                return list[0].sol ?: 1
+                return list[0].sol ?: throw Exception()
             } catch (e: Exception) {
+                if (currentDay == retryLimit){
+                    "Possible inactive rover ($rover) pulling manifest".toConsole()
+                    return getMaxSol()
+                }
                 e.toConsole()
             }
             currentDay++
+        }
+        return DEFAULT_SOL
+    }
+
+
+
+    /**
+     * Get max sol from the manifest
+     */
+    private suspend fun getMaxSol(): Int{
+        try {
+            val title = MAX_SOL + rover
+            val localData = LocalData(context)
+            if (localData.exists(title))
+                return localData.read(MAX_SOL,-1)
+            val response = liveRetrofit.create(MarsRoverPhotosService::class.java)
+                .getRoverManifest(rover).body()?.get("photo_manifest")?.asJsonObject
+            "max sol ${response?.get(MAX_SOL)}".toConsole()
+            return response?.get(MAX_SOL)?.asInt?.also {
+                localData.write(title,it)
+            } ?: throw Exception()
+        } catch (e: Exception) {
+            e.toConsole()
         }
         return 1
     }

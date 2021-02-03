@@ -4,6 +4,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.google.gson.annotations.SerializedName
+import tekin.lutfi.nasa.rest.api.util.detailDateFormat
 
 data class Photo(
     val camera: Camera? = null,
@@ -15,6 +16,9 @@ data class Photo(
     val rover: Rover? = null,
     val sol: Int? = null
 ) {
+
+    val photoDate: String get() = "${earthDate?.detailDateFormat} (Sol $sol)"
+
 
     fun logDetail() {
         Firebase.analytics.logEvent("photo-detail-selected") {

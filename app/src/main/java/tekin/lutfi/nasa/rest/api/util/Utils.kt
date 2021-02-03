@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api
+package tekin.lutfi.nasa.rest.api.util
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -11,11 +11,16 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import tekin.lutfi.nasa.rest.api.BuildConfig
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 const val NASA_DATE_FORMAT = "yyyy-M-d"
+const val DETAIL_RESPONSE_DATE_FORMAT = "yyyy-MM-DD"
+const val DETAIL_DATE_FORMAT = "MMM dd, yyyy"
 
 const val DEFAULT_TIMEOUT: Long = 15000
 
@@ -90,7 +95,7 @@ private val apiKeyInterceptor = object : Interceptor {
     }
 }
 
-private val onlineInterceptor =  object : Interceptor {
+private val onlineInterceptor = object : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         val maxAge = 300 // read from cache for 300 seconds even if there is internet connection
@@ -102,7 +107,7 @@ private val onlineInterceptor =  object : Interceptor {
 }
 
 private val Context.offlineInterceptor: Interceptor
-    get() = object : Interceptor{
+    get() = object : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
             val maxStale = 60 * 60 * 12 //When offline read from cache up to 12 hours
@@ -134,18 +139,53 @@ val Context.defaultRetrofit: Retrofit
         )
         .build()
 
+/**
+ * A retrofit client without any cache enabled
+ */
+val liveRetrofit: Retrofit
+    get() {
+        val client = OkHttpClient.Builder()
+            .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
+            .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
+            .readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
+            .addInterceptor(apiKeyInterceptor)
+            .addInterceptor(loggingInterceptor(HttpLoggingInterceptor.Level.BODY))
+            .build()
+        return Retrofit.Builder()
+            .baseUrl(serviceBaseUrl)
+            .client(client)
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder().serializeNulls().create()
+                )
+            )
+            .build()
+    }
 
 /**
  * Send given object to logcat and selectively Crashlytics
  */
-fun Any?.toConsole(omitFromCrashlytics: Boolean = false){
-    if (BuildConfig.DEBUG){
+fun Any?.toConsole(omitFromCrashlytics: Boolean = false) {
+    if (BuildConfig.DEBUG) {
         Log.d("NRDLOG", this.toString())
     }
     if (omitFromCrashlytics) return
     val crashlytics = FirebaseCrashlytics.getInstance()
     if (this is Exception)
         crashlytics.recordException(this)
-    else  crashlytics.log(this.toString())
+    else crashlytics.log(this.toString())
 
 }
+
+val String.detailDateFormat: String
+    get() {
+        try {
+            val dateFormat = SimpleDateFormat(DETAIL_RESPONSE_DATE_FORMAT, Locale.getDefault())
+            val prettyFormat = SimpleDateFormat(DETAIL_DATE_FORMAT, Locale.ENGLISH)
+            val date = dateFormat.parse(this)?.time
+            return prettyFormat.format(date)
+        } catch (e: Exception) {
+            e.toConsole()
+        }
+        return this
+    }
