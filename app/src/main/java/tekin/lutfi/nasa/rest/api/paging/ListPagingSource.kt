@@ -1,8 +1,8 @@
 package tekin.lutfi.nasa.rest.api.paging
 
 import androidx.paging.PagingSource
-import tekin.lutfi.nasa.rest.api.model.Photo
-import tekin.lutfi.nasa.rest.api.service.PhotosApi
+import tekin.lutfi.nasa.rest.api.rest.data.PhotosApi
+import tekin.lutfi.nasa.rest.api.rest.model.Photo
 import tekin.lutfi.nasa.rest.api.util.toConsole
 
 const val PAGE_SIZE = 25

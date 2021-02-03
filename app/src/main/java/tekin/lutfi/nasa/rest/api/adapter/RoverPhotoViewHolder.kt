@@ -11,7 +11,7 @@ import coil.load
 import coil.request.ImageRequest
 import coil.request.ImageResult
 import tekin.lutfi.nasa.rest.api.R
-import tekin.lutfi.nasa.rest.api.model.Photo
+import tekin.lutfi.nasa.rest.api.rest.model.Photo
 
 class RoverPhotoViewHolder internal constructor(
     inflater: LayoutInflater,

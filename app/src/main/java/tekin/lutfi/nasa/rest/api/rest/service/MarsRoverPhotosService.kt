@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api.service
+package tekin.lutfi.nasa.rest.api.rest.service
 
 import com.google.gson.JsonObject
 import retrofit2.Response

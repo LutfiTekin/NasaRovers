@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api.model
+package tekin.lutfi.nasa.rest.api.rest.model
 
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent

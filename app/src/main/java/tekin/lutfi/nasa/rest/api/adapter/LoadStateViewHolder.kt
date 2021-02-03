@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import tekin.lutfi.nasa.rest.api.R
-import tekin.lutfi.nasa.rest.api.model.Photo
 
 class LoadStateViewHolder internal constructor(
     inflater: LayoutInflater,

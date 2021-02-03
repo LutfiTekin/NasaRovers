@@ -1,7 +1,7 @@
 package tekin.lutfi.nasa.rest.api.paging
 
 import androidx.recyclerview.widget.DiffUtil
-import tekin.lutfi.nasa.rest.api.model.Photo
+import tekin.lutfi.nasa.rest.api.rest.model.Photo
 
 object RoverPhotoComparator: DiffUtil.ItemCallback<Photo>() {
     override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {

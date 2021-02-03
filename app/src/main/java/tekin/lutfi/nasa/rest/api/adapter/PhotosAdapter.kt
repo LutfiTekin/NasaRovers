@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import tekin.lutfi.nasa.rest.api.R
-import tekin.lutfi.nasa.rest.api.model.Photo
+import tekin.lutfi.nasa.rest.api.rest.model.Photo
 import tekin.lutfi.nasa.rest.api.paging.RoverPhotoComparator
 
 const val TYPE_LIST = 1

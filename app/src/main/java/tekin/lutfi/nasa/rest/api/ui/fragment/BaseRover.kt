@@ -24,10 +24,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import tekin.lutfi.nasa.rest.api.R
 import tekin.lutfi.nasa.rest.api.adapter.*
-import tekin.lutfi.nasa.rest.api.model.Photo
+import tekin.lutfi.nasa.rest.api.rest.model.Photo
 import tekin.lutfi.nasa.rest.api.paging.ListPagingSource
 import tekin.lutfi.nasa.rest.api.paging.PAGE_SIZE
-import tekin.lutfi.nasa.rest.api.service.PhotosApi
+import tekin.lutfi.nasa.rest.api.rest.data.PhotosApi
 import tekin.lutfi.nasa.rest.api.ui.dialog.ROVER_PHOTO
 import tekin.lutfi.nasa.rest.api.viewmodel.MODE_GRID
 import tekin.lutfi.nasa.rest.api.viewmodel.MODE_LIST

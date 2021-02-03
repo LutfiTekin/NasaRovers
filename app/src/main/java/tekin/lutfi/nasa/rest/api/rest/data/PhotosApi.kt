@@ -1,4 +1,4 @@
-package tekin.lutfi.nasa.rest.api.service
+package tekin.lutfi.nasa.rest.api.rest.data
 
 import android.content.Context
 import com.google.firebase.analytics.ktx.analytics
@@ -10,8 +10,9 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import tekin.lutfi.nasa.rest.api.model.Photo
+import tekin.lutfi.nasa.rest.api.rest.model.Photo
 import tekin.lutfi.nasa.rest.api.paging.PAGE_SIZE
+import tekin.lutfi.nasa.rest.api.rest.service.MarsRoverPhotosService
 import tekin.lutfi.nasa.rest.api.util.*
 import java.text.SimpleDateFormat
 import java.util.*
