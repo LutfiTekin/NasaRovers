@@ -13,13 +13,26 @@ class ListPagingSource(private val source: PhotosApi) :
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
 
         return try {
-            val nextPage = params.key ?: 0
-            val data = source.loadPhotos(nextPage)
+            val requestedPage = params.key ?: 0
+            var data = source.loadPhotos(requestedPage)
+
+            //Check if current sol is consumed
+            if (data.size < PAGE_SIZE && source.selectedSol > 1){
+                //reset page to default
+                source.page = 1
+                //request a new sol data from data source
+                val dataFromNewSol = source.loadPhotos(solConsumed = true)
+                data = data.toMutableList().apply {
+                    addAll(dataFromNewSol) //load first list data from the new sol
+                }.toList()
+            }
+
+            "Loaded page size ${data.size}".toConsole(true)
 
             LoadResult.Page(
                 data,
-                if (nextPage == 0) null else nextPage - 1,
-                if (data.size < PAGE_SIZE) null else source.page + 1
+                prevKey = if (requestedPage == 0) null else requestedPage - 1,
+                nextKey = if (data.size < PAGE_SIZE) null else source.page + 1
             )
         } catch (e: Exception) {
             "${e.message}".toConsole()

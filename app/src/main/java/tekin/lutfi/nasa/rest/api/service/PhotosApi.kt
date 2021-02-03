@@ -1,5 +1,9 @@
 package tekin.lutfi.nasa.rest.api.service
 
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -22,13 +26,19 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
 
     private val service = retrofit.create(MarsRoverPhotosService::class.java)
 
-    suspend fun loadPhotos(requestedPage: Int): List<Photo>{
+    suspend fun loadPhotos(requestedPage: Int = 1, solConsumed: Boolean = false): List<Photo> {
         try {
-            if (selectedSol == 0){
+            if (selectedSol == 0) {
                 selectedSol = findMostRecentSol()
             }
+            if (solConsumed){
+                selectedSol--
+                if (selectedSol == 0){
+                    return emptyList()
+                }
+            }
             page = requestedPage
-            val response = service.roverPhotosBySol(rover,selectedSol,camera,page)
+            val response = service.roverPhotosBySol(rover, selectedSol, camera, page)
             return response.parseList()
         } catch (e: Exception) {
             e.message.toConsole()
@@ -42,13 +52,13 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
      * From what I observed it is couple of days
      * behind from current date
      */
-    private suspend fun findMostRecentSol(): Int{
+    private suspend fun findMostRecentSol(): Int {
         val retryLimit = 5
         var currentDay = 0
-        while (currentDay < retryLimit){
+        while (currentDay < retryLimit) {
             //Get a date to try in millisecond unit
             val dayInMillis = Calendar.getInstance().apply {
-                add(Calendar.DAY_OF_YEAR,-currentDay)
+                add(Calendar.DAY_OF_YEAR, -currentDay)
             }.time.time
             //format date
             val stringDate = sdf.format(dayInMillis).also { it.toConsole() }
