@@ -11,6 +11,9 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import tekin.lutfi.nasa.rest.api.R
 import tekin.lutfi.nasa.rest.api.ui.fragment.AVAILABLE_CAMERAS
 import tekin.lutfi.nasa.rest.api.ui.fragment.SELECTED_ROVER
@@ -58,9 +61,17 @@ class SelectCamera: BottomSheetDialogFragment() {
             val map = roverViewModel.selectedCamera.value?.toMutableMap() ?: mutableMapOf()
             map[selectedRover] = selectedCamera
             roverViewModel.selectedCamera.value = map.toMap()
+            logCamSelection()
             dismissAllowingStateLoss()
         }
 
+    }
+
+    private fun logCamSelection(){
+        Firebase.analytics.logEvent("camera-selected") {
+            param("rover", selectedRover)
+            param("camera", selectedCamera.ifBlank { "all" })
+        }
     }
 
     private fun setupChipGroup() {

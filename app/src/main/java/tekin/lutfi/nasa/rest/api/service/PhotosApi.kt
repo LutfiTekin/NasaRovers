@@ -15,7 +15,7 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
 
     var page = 1
         set(value) {
-            "Page requested $value".toConsole()
+            logPage(value.toLong())
             field = value
         }
     var selectedSol = 0
@@ -77,6 +77,14 @@ class PhotosApi(private val rover: String, retrofit: Retrofit, private val camer
         val type = object : TypeToken<List<Photo>>() {}.type
         val body = body()?.get("photos")
         return Gson().fromJson(body, type)
+    }
+
+    private fun logPage(requestedPage: Long) {
+        Firebase.analytics.logEvent("pagination") {
+            param("rover", rover)
+            param("camera", camera ?: "all")
+            param("page", requestedPage)
+        }
     }
 
 }

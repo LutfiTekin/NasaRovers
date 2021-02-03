@@ -15,6 +15,10 @@ import androidx.paging.cachedIn
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,6 +54,10 @@ abstract class BaseRover : Fragment(), DetailListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Firebase.analytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM) {
+            param(FirebaseAnalytics.Param.ITEM_ID, "rover")
+            param(FirebaseAnalytics.Param.ITEM_NAME, roverName)
+        }
         return inflater.inflate(R.layout.fragment_rover, container, false)
     }
 
@@ -92,6 +100,7 @@ abstract class BaseRover : Fragment(), DetailListener {
                 photosAdapter.submitData(it)
             }
         }
+
     }
 
     private fun setupUI() {

@@ -27,6 +27,7 @@ class PhotoDetail: BottomSheetDialogFragment() {
         arguments?.getString(ROVER_PHOTO)?.let { data ->
             val type = object : TypeToken<Photo>(){}.type
             photo = Gson().fromJson(data,type)
+            photo?.logDetail()
         }
         return inflater.inflate(R.layout.dialog_photo_detail, container, false)
     }
