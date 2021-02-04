@@ -3,7 +3,7 @@
 
 
 ## Completed Tasks
-- [X] Show 3 tabs for each rover Curiosity, Opportunity, Spirit 
+- [X] Show 3 tabs, one for each rover Curiosity, Opportunity, Spirit 
 - [X] Load images taken by those rovers from nasa api
 - [X] Implement infinite scrolling with pagination
 - [X] Implement filtering results by camera
