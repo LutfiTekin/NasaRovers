@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,7 +42,7 @@ const val SPIRIT = "spirit"
 const val AVAILABLE_CAMERAS = "ac"
 const val SELECTED_ROVER = "sr"
 
-abstract class BaseRover : Fragment(), DetailListener {
+abstract class BaseRover : Fragment(), DetailListener, PhotosApi.Callback {
 
     private val viewModel: RoverViewModel by activityViewModels()
     private lateinit var attachedContext: Context
@@ -73,11 +74,17 @@ abstract class BaseRover : Fragment(), DetailListener {
         )
     }
 
+    private val loadingToast: Toast by lazy {
+        Toast.makeText(attachedContext,getString(R.string.toast_loading_images),Toast.LENGTH_LONG)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         loadRoverPhotos()
+        loadingToast.show()
         viewModel.selectedCamera.observe(viewLifecycleOwner, { map ->
+            loadingToast.show()
             val selectedCamera = map[roverName]
             if (selectedCamera.isNullOrBlank())
                 loadRoverPhotos()
@@ -87,7 +94,7 @@ abstract class BaseRover : Fragment(), DetailListener {
     }
 
     private fun loadRoverPhotos(camera: String? = null) {
-        val source = PhotosApi(roverName, attachedContext, camera)
+        val source = PhotosApi(roverName, attachedContext, camera, this)
         val paged = Pager(PagingConfig(PAGE_SIZE)) {
             ListPagingSource(source)
         }.flow.cachedIn(lifecycleScope)
@@ -129,6 +136,11 @@ abstract class BaseRover : Fragment(), DetailListener {
             viewModel.launchFilterDialog.value = null
 
         })
+    }
+
+    override fun onFirstPageLoaded() {
+        if (isAdded) //if the current fragment is added to stack
+            loadingToast.cancel()
     }
 
     override fun onSelected(photo: Photo?) {

@@ -19,7 +19,12 @@ import java.util.*
 
 const val DEFAULT_SOL = 1
 
-class PhotosApi(private val rover: String, private val context: Context, private val camera: String?) {
+class PhotosApi(
+    private val rover: String,
+    private val context: Context,
+    private val camera: String?,
+    private val callback: Callback? = null
+) {
 
     var page = 1
         set(value) {
@@ -28,31 +33,34 @@ class PhotosApi(private val rover: String, private val context: Context, private
         }
     var selectedSol = 0
 
+    private var firstPageLoaded: Boolean = false
+
     private val maxSolKey = MAX_SOL + rover
 
     private val localData by lazy { LocalData(context) }
 
     private val service = context.defaultRetrofit.create(MarsRoverPhotosService::class.java)
 
-    suspend fun findMostRecentList(): List<Photo>{
-        return withContext(Dispatchers.IO){
+    suspend fun findMostRecentList(): List<Photo> {
+        return withContext(Dispatchers.IO) {
             var maxRetry = 100
-            if (localData.exists(maxSolKey)){
+            if (localData.exists(maxSolKey)) {
                 maxRetry = localData.read(maxSolKey, maxRetry)
             }
 
             val combinedList = mutableListOf<Photo>()
-            while (maxRetry > 0){
+            while (maxRetry > 0) {
                 maxRetry--
                 "Retries left $maxRetry".toConsole(true)
                 try {
-                    val list = loadPhotos(1,true)
+                    val list = loadPhotos(1, true)
                     if (list.isNotEmpty()) {
                         combinedList.addAll(list)
                         if (combinedList.size >= PAGE_SIZE)
                             return@withContext combinedList
                     }
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                }
             }
             return@withContext emptyList()
         }
@@ -63,15 +71,20 @@ class PhotosApi(private val rover: String, private val context: Context, private
             if (selectedSol == 0) {
                 selectedSol = findMostRecentSol()
             }
-            if (solConsumed){
+            if (solConsumed) {
                 selectedSol--
-                if (selectedSol == 0){
+                if (selectedSol == 0) {
                     return emptyList()
                 }
             }
             page = requestedPage
             val response = service.roverPhotosBySol(rover, selectedSol, camera, page)
-            return response.parseList()
+            return response.parseList().also {
+                if (it.isNotEmpty() && !firstPageLoaded){
+                    callback?.onFirstPageLoaded()
+                    firstPageLoaded = true
+                }
+            }
         } catch (e: Exception) {
             e.message.toConsole()
         }
@@ -105,7 +118,7 @@ class PhotosApi(private val rover: String, private val context: Context, private
                     throw Exception("Trying to find recent list $currentDay")
                 return list[0].sol ?: throw Exception()
             } catch (e: Exception) {
-                if (currentDay == retryLimit){
+                if (currentDay == retryLimit) {
                     "Possible inactive rover ($rover) pulling manifest".toConsole()
                     return getMaxSol()
                 }
@@ -117,21 +130,20 @@ class PhotosApi(private val rover: String, private val context: Context, private
     }
 
 
-
     /**
      * Get max sol from the manifest
      */
-    private suspend fun getMaxSol(): Int{
+    private suspend fun getMaxSol(): Int {
         try {
             val title = MAX_SOL + rover
             val localData = LocalData(context)
             if (localData.exists(title))
-                return localData.read(MAX_SOL,-1)
+                return localData.read(MAX_SOL, -1)
             val response = liveRetrofit.create(MarsRoverPhotosService::class.java)
                 .getRoverManifest(rover).body()?.get("photo_manifest")?.asJsonObject
             "$rover max sol ${response?.get(MAX_SOL)}".toConsole()
             return response?.get(MAX_SOL)?.asInt?.also {
-                localData.write(title,it)
+                localData.write(title, it)
             } ?: throw Exception()
         } catch (e: Exception) {
             e.toConsole()
@@ -155,9 +167,16 @@ class PhotosApi(private val rover: String, private val context: Context, private
         Firebase.analytics.logEvent("pagination") {
             param("rover", rover)
             param("camera", camera ?: "all")
-            param("sol",selectedSol.toLong())
+            param("sol", selectedSol.toLong())
             param("page", requestedPage)
         }
     }
 
+    interface Callback {
+        /**
+         * Signaling the api consumer that the first page of the request is successfully loaded
+         * This can be used for changing a UI element that in a loading state
+         */
+        fun onFirstPageLoaded()
+    }
 }

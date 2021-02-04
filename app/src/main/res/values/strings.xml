@@ -26,4 +26,5 @@
     <string name="cd_rover_photo">Image taken by rover</string>
     <string name="notification_channel_general_description">Default notification channel</string>
     <string name="notification_channel_general">General</string>
+    <string name="toast_loading_images">Loading images, please wait</string>
 </resources>
