@@ -15,7 +15,6 @@ class ListPagingSource(private val source: PhotosApi) :
         return try {
             val requestedPage = params.key ?: 0
             var data = source.loadPhotos(requestedPage)
-            "Sol: ${source.selectedSol}".toConsole()
             //Check if current sol is consumed
             if (data.size < PAGE_SIZE && source.selectedSol > 1){
                 "Sol consumed".toConsole()
@@ -28,7 +27,7 @@ class ListPagingSource(private val source: PhotosApi) :
                 }.toList()
             }
 
-            "Loaded page size ${data.size}".toConsole(true)
+            "Loaded page Sol: ${source.selectedSol} Page: ${source.page} size ${data.size}".toConsole(true)
 
             LoadResult.Page(
                 data,

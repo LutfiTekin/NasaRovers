@@ -9,21 +9,4 @@ data class Camera(
     val name: String = "",
     @SerializedName("rover_id")
     val roverId: Int? = null
-){
-
-    companion object {
-
-        val list = listOf(
-            "FHAZ",
-            "RHAZ",
-            "MAST",
-            "CHEMCAM",
-            "MAHLI",
-            "MARDI",
-            "NAVCAM",
-            "PANCAM",
-            "MINITES"
-        )
-    }
-
-}
+)
