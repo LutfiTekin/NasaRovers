@@ -180,7 +180,7 @@ val String.detailDateFormat: String
     get() {
         try {
             val dateFormat = SimpleDateFormat(DETAIL_RESPONSE_DATE_FORMAT, Locale.getDefault())
-            val prettyFormat = SimpleDateFormat(DETAIL_DATE_FORMAT, Locale.ENGLISH)
+            val prettyFormat = SimpleDateFormat(DETAIL_DATE_FORMAT, Locale.getDefault())
             val date = dateFormat.parse(this)?.time
             return prettyFormat.format(date)
         } catch (e: Exception) {
