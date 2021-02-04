@@ -11,6 +11,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import tekin.lutfi.nasa.rest.api.R
 import tekin.lutfi.nasa.rest.api.ui.activity.CHANNEL_GENERAL
+import tekin.lutfi.nasa.rest.api.ui.activity.DEEP_LINK_DESTINATION
 import tekin.lutfi.nasa.rest.api.ui.activity.Home
 import tekin.lutfi.nasa.rest.api.ui.fragment.CURIOSITY
 import tekin.lutfi.nasa.rest.api.ui.fragment.OPPORTUNITY
@@ -33,7 +34,7 @@ class CloudMessaging : FirebaseMessagingService() {
      * if remote message data contains a rover
      */
     private fun RemoteMessage.shouldOverride(): Boolean{
-        val destination = data["dest"] ?: return false
+        val destination = data[DEEP_LINK_DESTINATION] ?: return false
 
         if (arrayOf(CURIOSITY, OPPORTUNITY, SPIRIT).contains(destination)){
             val destinationId = when(destination){

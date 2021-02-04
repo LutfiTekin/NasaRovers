@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.media.AudioAttributes
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +19,9 @@ import tekin.lutfi.nasa.rest.api.R
 
 const val CHANNEL_GENERAL = "general"
 
+const val DEEP_LINK_DESTINATION = "dest"
+const val CUSTOM_URI_SCHEME = "nasarover://"
+
 class Landing : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +32,13 @@ class Landing : AppCompatActivity() {
         }
         Firebase.remoteConfig.setConfigSettingsAsync(configSettings)
         Firebase.remoteConfig.setDefaultsAsync(R.xml.remote_config).addOnCompleteListener {
-            startActivity(Intent(this,Home::class.java))
+            val home = Intent(this, Home::class.java)
+            if (intent.extras != null){
+                val destinationRover = intent.getStringExtra(DEEP_LINK_DESTINATION)
+                home.data = Uri.parse("$CUSTOM_URI_SCHEME$destinationRover")
+            }
+            startActivity(home)
         }
-
     }
 
 

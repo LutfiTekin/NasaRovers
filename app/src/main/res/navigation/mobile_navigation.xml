@@ -11,11 +11,13 @@
     <fragment
         android:id="@+id/navigation_opportunity"
         android:name="tekin.lutfi.nasa.rest.api.ui.fragment.Opportunity"
-        android:label="Opportunity"
-        >
+        android:label="Opportunity">
         <deepLink
             android:id="@+id/deepLink"
             app:uri="https://solarsystem.nasa.gov/missions/opportunity/in-depth/" />
+        <deepLink
+            android:id="@+id/deepLink3"
+            app:uri="nasarover://opportunity" />
     </fragment>
     <fragment
         android:id="@+id/navigation_spirit"
@@ -24,6 +26,9 @@
         <deepLink
             android:id="@+id/deepLink"
             app:uri="https://solarsystem.nasa.gov/missions/spirit/in-depth/" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="nasarover://spirit" />
     </fragment>
     <dialog
         android:id="@+id/selectCamera"
