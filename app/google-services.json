@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "894707771569",
+    "project_id": "nasa-rovers-82a07",
+    "storage_bucket": "nasa-rovers-82a07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894707771569:android:16bd1d9d744f75ae3e1a90",
+        "android_client_info": {
+          "package_name": "tekin.lutfi.nasa.rest.api"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894707771569-iki2kdmkd5k6db20p3rl17om49vj95gl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBubYJJqwF6luYyK7rgT2MeaQX8qQ1PnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894707771569-iki2kdmkd5k6db20p3rl17om49vj95gl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
