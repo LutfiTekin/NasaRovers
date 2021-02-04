@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 
 
 const val NASA_DATE_FORMAT = "yyyy-M-d"
-const val DETAIL_RESPONSE_DATE_FORMAT = "yyyy-MM-DD"
+const val DETAIL_RESPONSE_DATE_FORMAT = "yyyy-MM-dd"
 const val DETAIL_DATE_FORMAT = "MMM dd, yyyy"
 
 const val DEFAULT_TIMEOUT: Long = 15000
