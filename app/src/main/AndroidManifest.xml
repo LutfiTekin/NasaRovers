@@ -35,7 +35,9 @@
         </activity>
         <activity
             android:name=".ui.activity.Home"
-            android:label="@string/title_activity_home"/>
+            android:label="@string/title_activity_home">
+            <nav-graph android:value="@navigation/mobile_navigation" />
+        </activity>
     </application>
 
 </manifest>
