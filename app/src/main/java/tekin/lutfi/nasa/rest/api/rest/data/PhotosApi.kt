@@ -129,7 +129,7 @@ class PhotosApi(private val rover: String, private val context: Context, private
                 return localData.read(MAX_SOL,-1)
             val response = liveRetrofit.create(MarsRoverPhotosService::class.java)
                 .getRoverManifest(rover).body()?.get("photo_manifest")?.asJsonObject
-            "max sol ${response?.get(MAX_SOL)}".toConsole()
+            "$rover max sol ${response?.get(MAX_SOL)}".toConsole()
             return response?.get(MAX_SOL)?.asInt?.also {
                 localData.write(title,it)
             } ?: throw Exception()
@@ -155,6 +155,7 @@ class PhotosApi(private val rover: String, private val context: Context, private
         Firebase.analytics.logEvent("pagination") {
             param("rover", rover)
             param("camera", camera ?: "all")
+            param("sol",selectedSol.toLong())
             param("page", requestedPage)
         }
     }
