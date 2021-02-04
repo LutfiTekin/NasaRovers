@@ -9,16 +9,16 @@
 
 Used third party libraries 
 
-Coil
+Coil 1.0.0
 https://github.com/coil-kt/coil
 
 
-Retrofit
+Retrofit 2.7.2
 https://github.com/square/retrofit
 
-OkHttp
+OkHttp 4.6.0
 https://github.com/square/okhttp
 
-Gson
+Gson 2.8.6
 https://github.com/google/gson
 
