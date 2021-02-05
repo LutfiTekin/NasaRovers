@@ -63,9 +63,7 @@ abstract class BaseRover : Fragment(), DetailListener, PhotosApi.Callback {
 
     private val photosAdapter = PhotosAdapter(this)
 
-    private val photosRV by lazy {
-        view?.findViewById<RecyclerView>(R.id.photosRV)
-    }
+    private var photosRV : RecyclerView? = null
 
 
     private val concatAdapter by lazy {
@@ -80,7 +78,7 @@ abstract class BaseRover : Fragment(), DetailListener, PhotosApi.Callback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
+        view.setupUI()
         loadRoverPhotos()
         loadingToast.show()
         viewModel.selectedCamera.observe(viewLifecycleOwner, { map ->
@@ -106,7 +104,8 @@ abstract class BaseRover : Fragment(), DetailListener, PhotosApi.Callback {
 
     }
 
-    private fun setupUI() {
+    private fun View.setupUI() {
+        photosRV = findViewById(R.id.photosRV)
         photosRV?.apply {
             setHasFixedSize(true)
             adapter = concatAdapter
