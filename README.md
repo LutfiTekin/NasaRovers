@@ -2,17 +2,6 @@
 
 
 
-## Completed Tasks
-- [X] Show 3 tabs, one for each rover Curiosity, Opportunity, Spirit 
-- [X] Load images taken by those rovers from nasa api
-- [X] Implement infinite scrolling with pagination
-- [X] Implement filtering results by camera
-- [X] Use Firebase libraries (Crashlytics, Analytics, Cloud Messaging)
-- [X] Log certain events with Firebase Analytics (launched activities, loaded tabs, opened details,pagination requests)
-- [X] Implement Deeplinking
-- [X] Implement Caching Layer
-
-
 ## Used third party libraries 
 
 ### Coil 1.0.0
