@@ -30,6 +30,17 @@
             android:id="@+id/deepLink2"
             app:uri="nasarover://spirit" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_perseverance"
+        android:name="tekin.lutfi.nasa.rest.api.ui.fragment.Perseverance"
+        android:label="Perseverance">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="https://mars.nasa.gov/mars2020/" />
+        <deepLink
+            android:id="@+id/deepLink3"
+            app:uri="nasarover://perseverance" />
+    </fragment>
     <dialog
         android:id="@+id/selectCamera"
         android:name="tekin.lutfi.nasa.rest.api.ui.dialog.SelectCamera"

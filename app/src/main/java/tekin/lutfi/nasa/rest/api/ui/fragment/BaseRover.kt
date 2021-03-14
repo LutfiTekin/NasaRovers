@@ -38,6 +38,7 @@ import tekin.lutfi.nasa.rest.api.viewmodel.RoverViewModel
 const val CURIOSITY = "curiosity"
 const val OPPORTUNITY = "opportunity"
 const val SPIRIT = "spirit"
+const val PERSEVERANCE = "perseverance"
 
 const val AVAILABLE_CAMERAS = "ac"
 const val SELECTED_ROVER = "sr"

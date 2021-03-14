@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_baseline_tab_3_24"
         android:title="@string/title_spirit" />
 
+    <item
+        android:id="@+id/navigation_perseverance"
+        android:icon="@drawable/ic_baseline_tab_4_24"
+        android:title="@string/title_perseverance" />
+
 </menu>
